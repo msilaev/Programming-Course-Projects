@@ -1,0 +1,205 @@
+Functionalities:
+
+1. Game status and other messages are shown in the 
+text browser field.  
+
+2. Game begins by setting number of players. It is done by writing number 
+in the text next to the push button "Set number of players" and then
+pressing this button. (Extra functionality).
+
+After correct entry  "Set number of players" button is deactivated.
+In case of inccorrect entry the message "Wrong number, try again!" is shown.
+
+3. After setting number of players the timer is activated. 
+After pressing "Quit" the game result and game time are shown in the information
+text browser field. 
+
+4. After setting number of players buttons 
+"Roll", "Transit", "Quit" are activated.
+
+5. When the player does not have tries anymore the "Roll" is deactivated.
+ 
+6. Dices are shown as buttons with icons. (Extra functionality)
+
+7. Pressing "Roll" generates new set of points and changes 
+dice figures accordingly.
+
+7. After the first "Roll" the player is suggested to "lock any dices by clicking 
+on icons". If this is done, only non-locked dice points are renewied on next "Roll"
+press. 
+
+8. Pressing "Transit" gives turn to the next player. 
+
+9. Pressing "Quit" ends the game and reports the score.
+
+10. "Start over" button resets the game and allow to start again from setting players number. 
+
+11. The background color of the user interface changes to blue, when the game is over, that is
+ when "Quit" is pressed. Resetting the game with "Start Over" sets the original color (green). 
+(Extra functionality)
+
+12. There are buttons "Pause" and "Resume" for pausing and resuming game, respectively. 
+When "Pause" is pressed, "Roll", "Trandit", "Quit" are deactivated, timer is stopped 
+and the information field shows "game paused" message. Pressing "Resume" restores the 
+status that was before presisng "Pause".
+
+13. Dice animation is added. Dices rotate first in the beginning of the game, after setting
+the number of players.
+Then they rotate on each "Roll" button push. Locked dices do not rotate. (Extre feature).
+
+14. "Close" button closes the main window.
+
+############## Game Play ##########################
+
+Game messages are shown in text browser field.
+
+The game play is directed intuitively clear by activated and deactivated several buttons. 
+Pushing buttons "Roll", "Transit", "Quit" is connected with execuing functions
+from GameEnging class.
+
+Button "Set Number of Players" is connected with the function
+"set_players(&eng)" in the MainWindow. In principle, it is possible to move thos funciton
+to "gameenging" class but in the given example it was aleady in the main funciton, so please don't
+count this as a error.
+
+Button "Start Over" resets the gameengine, that is allows to start the game again 
+from setting the number of players. It was not mentioned in the task whether reset shoud just 
+nullify the scores or the whole game information. I took the easiset path because of the
+severe lack of time. 
+
+Button "Pause" pauses the game, deactivates buttons, stops timer and prints the message about that.
+Button "Resume" restores the status before the "Pause" was clicked.
+
+Dice buttons are needed to lock the dices by pressing on them. This funciton becomes activated 
+only after the first pressing "Roll". It is realized by using pointers to the button objects. 
+Clicking on each button is handled in the function "handle_dice_clicks". In result we get the 
+vector of booleans showing if the corresponding button is locked or not. This vector is written
+to the corresponding vector in "gameengine" class to determine how to collect points from dices during 
+the next try.
+
+On each "Roll" pressing dice unlocked button icons rotate. Dice rotation is implemented using 
+additional timer QTime object. It is designed to stop 0.2 secundes after the
+start and is connected with "rotate_dices" slot function. Locked buttons stand still.
+
+
+############## Program structure ##################
+
+There are two main classes: "frontend" MainWindow and "backend" GameEngine.
+
+************ MainWindow class *****************
+This class orchestrates various aspects of the game UI, user interactions, game engine interactions, 
+and UI updates based on game states.
+
+Here is the breakdown of this class functinality.
+
+1. Constructor MainWindow::MainWindow(QWidget *parent)
+Initialization: 
+Initializes the UI, sets button states, sets up timers for the game, 
+sets styles for UI elements, and initializes the game engine.
+
+2. Button Connections:
+ Connects dice buttons to the handle_dice_clicks function.
+
+3. Timers: 
+Sets up two timers: one for general timing (timer) and another for dice animation (timer_dices). 
+The dice timer is connected to the rotate_dice function that handles dice animation.
+
+4. Other UI Settings: 
+Sets styles for LCD numbers and the main window.
+
+5. Initializes Game: 
+Initializes and sets up game-related elements and UI.
+
+6. Slots (Button Click Handlers):
+on_rollButton_clicked(): Handles the roll button click event. It interacts with the game engine, updates messages, 
+and manages button states based on game progress.
+
+on_transitButton_clicked(): Handles the transit button click event. Updates game states, 
+messages, and enables relevant buttons.
+
+on_quitButton_clicked(): Handles the quit button click event. Performs game-related actions like stopping the game, 
+displaying results, and updating UI states.
+
+on_numOfPlayersButton_clicked(): Handles the number of players button click event. Sets the number of players and starts the game.
+
+on_StartOverButton_clicked(): Handles the start-over button click event. Resets the game, timer, and UI elements.
+
+on_pauseButton_clicked() and on_resumeButton_clicked(): Manage game pause and resume functionality
+ by stopping/resuming timers and updating UI states accordingly.
+
+7. Other Member Functions:
+Functions like recet_locked_dices(), block_dices_buttons(), activate_dices_buttons(), get_locked_dices(), etc.,
+ handle game-related logic such as managing locked dice states, button activations, and retrieving game data.
+
+draw_dices() is responsible for rendering the dice images based on game states and settings.
+
+MyTimerSlot() updates the game timer displayed in the UI.
+
+Destructor MainWindow::~MainWindow()
+Handles proper cleanup of allocated resources like timers, UI elements, and the game engine.
+
+******************* GameEngne class *******************
+
+This class encapsulates the core logic for managing the game, player turns, 
+dice rolling, and determining the game winner based on the calculated points. 
+It ensures the game progresses according to its defined rules and provides necessary information about the game state.
+
+The original logic given in the template is preserved. Instead of printing text messages in the "cout" channel the
+functions in the gameengine class change the state of the class variables  
+    // messaged generated by corresponding functions
+    std::vector<std::string> message_from_roll;
+    std::string message_from_update_guide;
+    std::string message_from_report_status;
+    std::string message_from_give_turn;
+    std::string message_from_report_winner;
+These variables are public and avaliable from the class MainWindow.
+
+
+Here's a breakdown of the class functionality:
+
+1. Constructor and Destructor
+Constructor: Initializes the game by setting the initial game turn and game-over status.
+
+2. Member Functions
+add_player(const Player player): Adds a player to the game.
+
+update_guide(): Updates a guide indicating the current player's turn and the number of rolls left.
+
+roll(): Simulates the rolling of dice for a player's turn. It handles dice rolling, checks 
+for locked dice, updates points, reduces rolls left, and manages game messages.
+
+give_turn(): Determines the next player's turn based on remaining rolls.
+
+report_winner(): Identifies and reports the game winner based on point values.
+
+report_player_status(): Generates a textual description of a player's point values.
+
+report_roll_results(): Returns the result of the latest dice roll.
+
+update_points(const std::vector<int>& new_points): Updates the points based on the new dice values obtained.
+
+all_turns_used(): Checks if all players have exhausted their turns.
+
+3. Utility Functions.
+is_game_over() const: Indicates if the game is over.
+
+4. Game Messages.
+The class manages various game messages stored in variables like message_from_roll, 
+message_from_give_turn, message_from_report_winner, message_from_report_status, etc.
+
+5. Internal Error Handling.
+Certain functions handle internal errors by setting messages accordingly.
+
+6. Game State
+Keeps track of players, their rolls left, point values, and determines the winner based on the accumulated points.
+
+
+
+
+
+
+
+
+
+
+
