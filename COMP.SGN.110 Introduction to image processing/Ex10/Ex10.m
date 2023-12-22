@@ -1,0 +1,24 @@
+clear all
+close all
+I = imread("cheetah.jpg")
+Ires1 = sliceCube(I, 50);
+Ires2 = sliceSphere(I, 50);
+
+figure
+subplot(1,2,1)
+imshow(Ires1)
+
+subplot(1,2,2)
+imshow(Ires2)
+
+
+I = imread("chameleon.jpg")
+Ires1 = sliceCube(I, 50);
+Ires2 = sliceSphere(I, 50);
+
+figure
+subplot(1,2,1)
+imshow(Ires1)
+
+subplot(1,2,2)
+imshow(Ires2)

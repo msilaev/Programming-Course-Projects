@@ -1,0 +1,46 @@
+% Histogram matching
+
+clear all
+close all
+
+Icorel = imread("corel.png");
+Ichurch = imread("church.png");
+
+
+Ichurch_corr = hismatch ( Icorel, Ichurch) ;
+
+
+figure
+subplot(2,2,1)
+imshow(Ichurch)
+title("Original")
+
+subplot(2,2,2)
+imshow(Ichurch_corr)
+title("Histogram matchin")
+
+subplot(2,2,3)
+
+hist_moon_eq = cumsum(imhist(Ichurch_corr));
+ bar(hist_moon_eq);
+% 
+ subplot(2,2,4)
+ hist_moon_eq = cumsum(imhist(Icorel));
+ bar(hist_moon_eq);
+% 
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+

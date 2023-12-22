@@ -1,0 +1,80 @@
+clear all
+%(a)
+I = imread("wom1.PNG");
+
+counts_self = [];
+for ind= 0:255
+    counts_self = [counts_self sum(sum(I == ind))];        
+end
+
+%(b)
+I_stretched = ContrastStretch (I);
+
+% (c)
+wom = imread("wom1.PNG");
+man = imread("man8.PNG");
+
+wom_str = ContrastStretch(wom);
+man_str = ContrastStretch(man);
+
+hist_wom = hist_self(wom);
+hist_wom_str = hist_self(wom_str);
+
+hist_man = hist_self(man);
+hist_man_str = hist_self(man_str);
+
+
+figure
+subplot(2,4,1)
+imshow(man)
+
+subplot(2,4,2)
+imshow(wom)
+
+subplot(2,4,3)
+imshow(hist_man)
+
+subplot(2,4,4)
+imshow(hist_wom)
+
+subplot(2,4,5)
+imshow(man_str)
+
+subplot(2,4,6)
+imshow(wom_str)
+
+subplot(2,4,7)
+plot(hist_man_str)
+
+subplot(2,4,8)
+plot(hist_wom_str)
+
+
+
+function Icontrast = ContrastStretch(I)
+
+val = unique(I);
+min_val = val(1);
+max_val= val(length(val));
+Icontrast = I;
+for i= 1:256*256
+Icontrast(i) = ceil((I(i) -min_val)*255/(max_val - min_val) ); 
+end 
+end
+
+
+function counts_self  = hist_self(I)
+counts_self = [];
+for ind= 0:255
+    counts_self = [counts_self sum(sum(I == ind))];        
+end
+end 
+
+
+% Compute and display the histogram with 256 bins
+% num_bins = 256;
+% [counts, bins] = imhist(I, num_bins);
+% imhist(I, num_bins);
+% 
+%  figure 
+% plot(counts- hist')

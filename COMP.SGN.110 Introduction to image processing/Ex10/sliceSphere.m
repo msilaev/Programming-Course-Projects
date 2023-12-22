@@ -1,0 +1,52 @@
+function IfiltS = sliceSphere(I, dist) 
+%and sliceSphere,
+% Display the image
+figure
+imshow(I);
+title('Select a pixel to choose color');
+
+% Get the user-selected pixel coordinates
+[x, y] = ginput(1); % Allows the user to click on the image to select a pixel
+
+% Get the RGB values of the selected pixel
+selectedColor = impixel(I, x, y);
+selectedColor = mean(selectedColor, 1);
+
+Cmask = zeros(size(I(:,:,1)));
+Smask = zeros(size(I(:,:,1)));
+
+sz = size(Cmask);
+sz_x = sz(2);
+sz_y = sz(1);
+
+for ix = 1:sz_y
+    for iy = 1:sz_x
+clr= I(ix,iy,:);
+
+distManh = ...
+abs( double(clr(1)) - double(selectedColor(1))) + ...
+abs( double(clr(2)) - double(selectedColor(2))) + ...
+abs( double(clr(3)) - double(selectedColor(3)));
+
+distEucl = ...
+   (double(clr(1)) - double(selectedColor(1)) ).^2 + ... 
+   (double(clr(2)) - double(selectedColor(2)) ).^2 + ...
+   (double(clr(3)) - double(selectedColor(3)) ).^2 ;
+
+        if ( distManh < dist )
+Cmask (ix,iy) =1    ;
+        end
+        if ( distEucl < dist^2 )
+Smask (ix,iy) =1    ;
+        end
+
+%         distManh
+%         distEucl
+%         dist
+%         pause
+    end
+%IfiltC = uint8(cat(3, Cmask, Cmask, Cmask)).*I;
+
+IfiltS = uint8(cat(3, Smask, Smask, Smask)).*I;
+        
+end

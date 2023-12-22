@@ -1,0 +1,27 @@
+% (a)
+[I,MAP] = imread("peppers.png");
+imshow(I)
+
+% (b)
+Ir= I;
+Ir(:,:,2) =0;
+Ir(:,:,3) =0;
+figure
+imshow(Ir)
+
+%(c)
+I2= I;
+I2(:,:,2) = I2(:,:,2) +50;
+
+figure
+imshow(I2)
+
+%(d)
+R= I(:,:,1);
+G= I(:,:,2);
+B= I(:,:,3);
+Icomb = cat(R,G,B)
+figure
+imshow(Ir)
+
+

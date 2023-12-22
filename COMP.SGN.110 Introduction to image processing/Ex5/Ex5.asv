@@ -1,0 +1,187 @@
+% Exercise 5, Task 1 Mikhail Silaev
+
+clear all
+close all
+
+I = imread("cameraman.tif");
+
+% Define the Laplacian kernel
+figure
+
+subplot(2,2,1)
+imshow(I)
+title( "Original" )
+
+
+subplot(2,2,2)
+a = 8;
+laplacian_kernel = [0, -1, 0; -1, a, -1; 0, -1, 0];
+result = imfilter(I, laplacian_kernel);
+imshow(result)
+title( "Laplacian, a= "+ num2str(a) )
+
+subplot(2,2,3)
+a = 9;
+laplacian_kernel = [0, -1, 0; -1, a, -1; 0, -1, 0];
+result = imfilter(I, laplacian_kernel);
+imshow(result)
+title( "a = "+ num2str(a) )
+
+subplot(2,2,4)
+a = 9.7;
+laplacian_kernel = [0, -1, 0; -1, a, -1; 0, -1, 0];
+result = imfilter(I, laplacian_kernel);
+imshow(result)
+title( "a = "+ num2str(a) )
+
+% Task 2
+% a
+n_level =10;
+sz = size(I);
+
+noise = randn(sz) * n_level;
+
+% Add the noise to the original image
+I_noise = imadd(I, uint8(noise));
+
+figure
+
+subplot(1,2,1)
+imshow(I)
+title( "Original" )
+
+subplot(1,2,2)
+imshow(I_noise)
+title( "Noise level: "+ num2str(n_level) )
+
+% b
+filter_size = 3;
+filtred_images = directional_filtering(I_noise,filter_size);
+
+figure
+subplot(2,2,1)
+imshow(filtred_images{1})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(0) );
+
+subplot(2,2,2)
+imshow(filtred_images{2})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(45) );
+
+subplot(2,2,3)
+imshow(filtred_images{3})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(90) );
+
+subplot(2,2,4)
+imshow(filtred_images{4})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(135) );
+
+%%%%%%%%%%%%%%
+filter_size = 5;
+filtred_images = directional_filtering(I_noise,filter_size);
+
+figure
+subplot(2,2,1)
+imshow(filtred_images{1})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(0) );
+
+subplot(2,2,2)
+imshow(filtred_images{2})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(45) );
+
+subplot(2,2,3)
+imshow(filtred_images{3})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(90) );
+
+subplot(2,2,4)
+imshow(filtred_images{4})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(135) );
+
+%%%%%%%%%%%%%%%%%%%%%55
+filter_size = 7;
+filtred_images = directional_filtering(I_noise,filter_size);
+
+figure
+subplot(2,2,1)
+imshow(filtred_images{1})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(0) );
+
+subplot(2,2,2)
+imshow(filtred_images{2})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(45) );
+
+subplot(2,2,3)
+imshow(filtred_images{3})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(90) );
+
+subplot(2,2,4)
+imshow(filtred_images{4})
+title( "Dirictional filter, size = " + num2str(filter_size) + ", dir = " + num2str(135) );
+
+
+% Task 3
+% Part c
+I = imread("cameraman.tif") ;
+n_level =50;
+sz = size(I);
+sz_x = sz(1);
+sz_y = sz(0);
+
+noise = zeros(sz);
+
+noise100 = randn(100) * n_level;
+
+noise [ sz_y ]
+
+% Add the noise to the original image
+I_noise = imadd(I, uint8(noise));
+
+
+100x100. 
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function filtred_images = directional_filtering(I,s)
+
+filtred_images = cell(1, 4);
+
+dir_kernel =  zeros(s);
+sz_fil = size(dir_kernel);
+sz_fil = sz_fil(1);
+
+for i=1:sz_fil
+dir_kernel ( ceil(sz_fil/2), i) = 1/sz_fil ;
+end
+filtred_images{1} =  imfilter(I, dir_kernel);
+
+dir_kernel =  zeros(s);
+for i=1:sz_fil
+dir_kernel (sz_fil+1 -1, i) = 1/sz_fil ;
+end
+filtred_images{2} =  uint8( imfilter(I, dir_kernel) );
+
+
+dir_kernel =  zeros(s);
+for i=1:sz_fil
+    dir_kernel (  i , ceil(sz_fil/2)) = 1/sz_fil;
+end
+filtred_images{3} =  imfilter(I, dir_kernel);
+
+dir_kernel =  zeros(s);
+for i=1:sz_fil
+    dir_kernel (  i , i) = 1/sz_fil;
+end
+filtred_images{4} =  imfilter(I, dir_kernel);
+
+end
+
+

@@ -1,0 +1,43 @@
+% Exercise 6, Task 2 Mikhail Silaev
+close all
+clear all
+
+%a
+I = ones(128,128)/2;
+If = fftshift(fft2(I));
+figure
+imshow(uint8( log(abs(If))))
+uint8
+%b
+sz_x=128;
+sz_y=128;
+I = zeros(128,128);
+I(floor(sz_y/2)-20: floor(sz_y/2)+20, floor(sz_x/2)-20: floor(sz_x/2)+20) =256;
+If = fftshift(fft2(I));
+figure
+imshow(uint8( log(abs(If))))
+
+%c
+I=repmat((0:127)/127, 128,1);
+figure
+imshow(uint8( log(abs(If))))
+
+%d
+S_b = zeros(128,128);
+S_b(floor(sz_y/2): floor(sz_y/2)+1, floor(sz_x/2): floor(sz_x/2)+1) =1/4;
+
+%e
+[x,y] = meshgrid(1:128,1:128);
+S_b = cos(8*pi*x/128 + 8*pi*y/128);
+contourf(x,y,S_b)
+
+
+
+
+
+
+
+
+
+
+

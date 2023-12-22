@@ -1,0 +1,39 @@
+% Exercise 6, Task 3 Mikhail Silaev
+
+clear all
+close all
+
+I = imread("cameraman.tif");
+If = fftshift(fft2(I));
+
+IfiltF_lp =ifftshift(BWLPfilter(If, 20, 2).*If);
+res_lp = ifft2(IfiltF_lp);
+
+IfiltF_hp = ifftshift(If-BWLPfilter(If, 20, 2).*If);
+res_hp =  ifft2(IfiltF_hp);
+
+Filt_lp = ifft2( ( BWLPfilter(If, 20, 2)));
+Filt_hp = ifft2( (1-BWLPfilter(If, 20, 2)));
+
+
+figure
+subplot(2,2,1)
+imshow(uint8(real(res_lp)))
+%imshow(uint8( abs(ifft2(If))))
+
+subplot(2,2,2)
+%imagesc(log(abs(Filt_lp) + 0.0001))
+%imshow(1- BWLPfilter(If, 20, 2) )
+surfc((abs(ifft2(1-BWLPfilter(If, 20, 2))) +0.0001))
+
+
+subplot(2,2,3)
+surfc((abs(ifft2(BWLPfilter(If, 20, 2))) ))
+
+
+subplot(2,2,4)
+imshow(uint8(real(res_hp)))
+
+
+
+

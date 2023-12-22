@@ -1,0 +1,32 @@
+clear all
+close all
+%2(a)
+I = imread("mbaboon.bmp");
+
+fun = @(blockStruct)blockStruct.data(2,2);
+
+B22 = blockproc(I,[4,4],fun) ;
+figure
+imshow(B22)
+
+
+%2(b)
+fun = @(blockStruct)blockStruct.data(1,1);
+B11 = blockproc(I,[4,4],fun) ;
+figure
+imshow(B11)
+
+%2(c)
+
+fun = @(blockStruct)int32(sum(sum(blockStruct.data))/16);
+
+
+Bmean = blockproc(I,[4,4],fun) ;
+figure
+imshow(Bmean)
+
+function fun (blockStruct) 
+end 
+
+% It is interestin that the eye does not average over this very small 4x4
+% pixel square
