@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+
+<div class="tables-container">
+    <a class="btn btn-warning home" href="{{ url_for('index') }}">Home</a>
+    <a class="btn btn-info refresh" href="{{ url_for('live_periodic') }}">Refresh</a>
+    <div class="counter"> {{game.counter}}  </div>
+
+    <table class="word table1">
+        <caption class="caption">Life on a torus</caption>
+
+        {% for i in range(game.height) %}
+        <tr>
+        {% for j in range(game.width) %}
+            {% if game.world[i][j] %}
+                <td class="cell living-cell"></td>
+            {% elif game.world[i][j]==0 and game.old_world[i][j] !=0%}
+                <td class="cell dead-cell"></td>
+            {% else %}
+                <td class="cell"></td>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+
+
+ </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+ <script> setInterval (() => window.location.reload(), 1000); </script>
+{% endblock %}

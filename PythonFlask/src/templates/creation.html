@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+
+<a class="btn btn-warning home" href="{{ url_for('live_box') }}">Create life in a box</a>
+<a class="btn btn-info refresh" href="{{ url_for('live_periodic') }}">Create life on a torus</a>
+
+{% endblock %}
+
+
